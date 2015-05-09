@@ -58,6 +58,19 @@ class Sofa
     end
   end
 
+  def show_all_views(db)
+    data = sit(:get, "/#{db}/_all_docs?startkey=\"_design/\"&endkey=\"_design0\"")
+  end
+
+  def get_view(db, design, view)
+    data = sit(:get, "/#{db}/_design/#{design}/_view/#{view}")
+  end
+
+  def get_all_docs(db)
+    data = sit(:get, "/#{db}/_all_docs")
+    JSON.parse(data)['rows'].map{|record|record['id']}
+  end
+
   def handle_error(req, res)
     e = RuntimeError.new("#{res.code}:#{res.message}\nMETHOD: #{req.method}\nURI: #{uri}#{req.path}\n#{res.body}")
     raise e
