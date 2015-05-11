@@ -58,8 +58,11 @@ class Sofa
     end
   end
 
-  def show_all_views(db)
+  def show_all_designs(db)
     data = sit(:get, "/#{db}/_all_docs?startkey=\"_design/\"&endkey=\"_design0\"")
+    JSON.parse(data)['rows'][0]['id'].split('/').last
+    designs = JSON.parse(data)['rows'].map{|r|r['id'].split('/').last}
+    designs.each{|d|print sit(:get, "/prod/_design/#{d}")}
   end
 
   def get_view(db, design, view)
