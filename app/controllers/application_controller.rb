@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     name = params['name']
     data = sit(:get, "/prod/#{name}")
     parsed_data = JSON.parse(data)
-    result = "#{parsed_data['_id']} => #{parsed_data['status']}"
+    result = "#{parsed_data['_id']} : #{parsed_data['status']}"
     render json: result
   end
 
@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     data = sit(:get, '/prod/_design/status/_view/health')
     parsed_data = JSON.parse(data)['rows']
     parsed_data = parsed_data.select{|r|r['value']=="#{params['state']}"} if status
-    results = parsed_data.map{|r| "#{r['id']} => #{r['value']}"}
+    results = parsed_data.map{|r| "#{r['id']} : #{r['value']}"}
     results.insert(0, results.count)
     render json: results
   end
