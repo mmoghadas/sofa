@@ -39,10 +39,10 @@ class ApplicationController < ActionController::Base
   end
 
   def get_all_health_status
-    status = params['state']
+    state = params['state'].downcase
     data = sit(:get, '/prod/_design/status/_view/health')
     parsed_data = JSON.parse(data)['rows']
-    parsed_data = parsed_data.select{|r|r['value']=="#{params['state']}"} if status
+    parsed_data = parsed_data.select{|r|r['value'].downcase=="#{state}"} if state
     results = parsed_data.map{|r| "#{r['id']} : #{r['value']}"}
     results.insert(0, results.count)
     render json: results
