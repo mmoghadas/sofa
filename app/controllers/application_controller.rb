@@ -9,6 +9,14 @@ class ApplicationController < ActionController::Base
 
   attr_reader :uri
 
+  def get_nothing
+    render text: 'nothing'
+  end
+
+  def post_nothing
+    render text: 'nothing'
+  end
+
   def curl_get_example
     data = sit(:get, '/prod')
     render json: data

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
   match '/health_status' => 'application#get_health_status', via: :get
+  match '/nothing' => 'application#get_nothing', via: :get
 
   match '/health_status' => 'application#post_heath_status', via: :post
+  match '/nothing' => 'application#post_nothing', via: :post
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
