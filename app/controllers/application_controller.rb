@@ -1,13 +1,14 @@
 require 'net/http'
 require 'uri'
 require 'json/ext'
+require 'couchrest'
 
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
-  attr_reader :uri
+  attr_reader :uri, :db
 
   def get_nothing
     render text: 'nothing'
@@ -32,18 +33,22 @@ class ApplicationController < ActionController::Base
 
   def get_service_health
     name = params['name']
-    data = sit(:get, "/prod/#{name}")
-    parsed_data = JSON.parse(data)
-    result = "#{parsed_data['_id']} : #{parsed_data['status']}"
+    data = db.get(name)
+    result = "#{data['_id']} : #{data['status']}"
     render json: result
   end
 
-  def get_all_health_status
-    state = params['state'].downcase
-    data = sit(:get, '/prod/_design/status/_view/health')
-    parsed_data = JSON.parse(data)['rows']
-    parsed_data = parsed_data.select{|r|r['value'].downcase=="#{state}"} if state
-    results = parsed_data.map{|r| "#{r['id']} : #{r['value']}"}
+  def get_healthy
+    display('healthy')
+  end
+
+  def get_unhealthy
+    display('unhealthy')
+  end
+
+  def display(state)
+    data = db.view("state/#{state}")['rows']
+    results = data.map{|r| "#{r['id']} : #{r['value']}"}
     results.insert(0, results.count)
     render json: results
   end
@@ -55,11 +60,11 @@ class ApplicationController < ActionController::Base
     data = {'_id'=>name, 'status'=>status}
 
     begin
-      record = sit(:get, "/prod/#{name}")
-      rev = JSON.parse(record)['_rev']
-      sit(:put, "/prod/#{name}", data.merge('_rev'=>rev).to_json)
+      record = db.get(name)
+      record['status']=status
+      record.save
     rescue
-      sit(:put, "/prod/#{name}", data.to_json)
+      db.save_doc(data)
     end
     render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
   end
@@ -67,11 +72,15 @@ class ApplicationController < ActionController::Base
   private
 
   def url
-    'http://127.0.0.1:5984'
+    'http://127.0.0.1:5984/prod'
   end
 
   def uri
     @uri ||= URI.parse(url)
+  end
+
+  def db
+    @db ||= CouchRest.database(url)
   end
 
   def http_request(req)
