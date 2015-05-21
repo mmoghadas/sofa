@@ -58,20 +58,36 @@ class ApplicationController < ActionController::Base
     render json: results
   end
 
+  # def post_heath_status
+  #   id = params['_id']
+  #   status = params['status']
+
+  #   data = {'_id'=>id, 'status'=>status}
+
+  #   record = get_record(id)
+
+  #   if record
+  #     CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
+  #   else
+  #     CouchRest.put("#{url}/#{id}", data)
+  #   end
+  #   render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
+  # end
+
   def post_heath_status
     id = params['_id']
     status = params['status']
+    # id = 'http_0'
+    # status = 'healthy'
 
     data = {'_id'=>id, 'status'=>status}
-
-    # record = get_record(id)
-
-    # if record
-      # CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
-    # else
+    # CouchRest.put("#{url}/#{id}", data)
+    begin
       CouchRest.put("#{url}/#{id}", data)
-    # end
-    render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
+    rescue
+      record = get_record(id)
+      CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
+    end
   end
 
   def get_record(id)
