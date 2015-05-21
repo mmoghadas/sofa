@@ -88,6 +88,7 @@ class ApplicationController < ActionController::Base
       record = get_record(id)
       CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
     end
+    render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
   end
 
   def get_record(id)
