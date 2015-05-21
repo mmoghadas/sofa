@@ -38,6 +38,11 @@ class ApplicationController < ActionController::Base
     render json: result
   end
 
+  def get_all_health_status
+    result = "you need to pass parameter 'name'"
+    render json: result
+  end
+
   def get_healthy
     display('healthy')
   end
@@ -59,13 +64,13 @@ class ApplicationController < ActionController::Base
 
     data = {'_id'=>id, 'status'=>status}
 
-    record = get_record(id)
+    # record = get_record(id)
 
-    if record
-      CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
-    else
+    # if record
+      # CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
+    # else
       CouchRest.put("#{url}/#{id}", data)
-    end
+    # end
     render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
   end
 
