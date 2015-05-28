@@ -1,12 +1,21 @@
 Rails.application.routes.draw do
 
+  # test routes
+  match '/nothing' => 'application#get_nothing', via: :get
+  match '/nothing' => 'application#post_nothing', via: :post
+
+  # couchdb routes
   match '/health_status' => 'application#get_health_status', via: :get
   match '/healthy' => 'application#get_healthy', via: :get
   match '/unhealthy' => 'application#get_unhealthy', via: :get
-  match '/nothing' => 'application#get_nothing', via: :get
-
   match '/health_status' => 'application#post_heath_status', via: :post
-  match '/nothing' => 'application#post_nothing', via: :post
+
+  # mongodb routes
+  match '/healthy_watchdogs' => 'application#get_healthy_watchdogs', via: :get
+  match '/unhealthy_watchdogs' => 'application#get_unhealthy_watchdogs', via: :get
+  match '/health_state' => 'application#post_heath_state', via: :post
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
