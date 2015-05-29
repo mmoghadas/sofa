@@ -27,22 +27,22 @@ class ApplicationController < ActionController::Base
   #  Couch               #
   ########################
 
-  def get_health_status
+  def get_state
     if params['name']
       get_service_health
     else
-      get_all_health_status
+      get_all_health_state
     end
   end
 
   def get_service_health
     name = params['name']
     data = db.get(name)
-    result = "#{data['_id']} : #{data['status']}"
+    result = "#{data['_id']} : #{data['state']}"
     render json: result
   end
 
-  def get_all_health_status
+  def get_all_health_state
     result = "you need to pass parameter 'name'"
     render json: result
   end
@@ -62,13 +62,11 @@ class ApplicationController < ActionController::Base
     render json: results
   end
 
-  def post_heath_status
+  def update_state
     id = params['_id']
-    status = params['status']
-    # id = 'http_0'
-    # status = 'healthy'
+    state = params['state']
 
-    data = {'_id'=>id, 'status'=>status}
+    data = {'_id'=>id, 'state'=>state}
     # CouchRest.put("#{url}/#{id}", data)
     begin
       CouchRest.put("#{url}/#{id}", data)
@@ -131,18 +129,18 @@ class ApplicationController < ActionController::Base
   end
 
   def random_data(db, name='http_', count=2)
-    available_status = %w(healthy unhealthy)
+    available_state = %w(healthy unhealthy)
 
     count.times do |c|
       service_name = name + c.to_s
-      status = {'status'=>available_status.sample}
+      state = {'state'=>available_state.sample}
 
       begin
         record = sit(:get, "/#{db}/#{service_name}")
         rev = JSON.parse(record)['_rev']
-        sit(:put, "/#{db}/#{service_name}", status.merge('_rev'=>rev).to_json)
+        sit(:put, "/#{db}/#{service_name}", state.merge('_rev'=>rev).to_json)
       rescue
-        sit(:put, "/#{db}/#{service_name}", status.to_json)
+        sit(:put, "/#{db}/#{service_name}", state.to_json)
       end
 
     end

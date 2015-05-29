@@ -6,18 +6,16 @@ Rails.application.routes.draw do
   match '/nothing' => 'application#post_nothing', via: :post
 
   # couchdb routes
-  match '/health_status' => 'application#get_health_status', via: :get
-  match '/healthy' => 'application#get_healthy', via: :get
-  match '/unhealthy' => 'application#get_unhealthy', via: :get
-  match '/health_status' => 'application#post_heath_status', via: :post
-
-  # mongodb routes
-  # match '/healthy_watchdogs' => 'application#get_healthy_watchdogs', via: :get
-  # match '/unhealthy_watchdogs' => 'application#get_unhealthy_watchdogs', via: :get
-  # match '/health_state' => 'application#post_heath_state', via: :post
+  match '/couchdb/state' => 'application#get_state', via: :get
+  match '/couchdb/healthy' => 'application#get_healthy', via: :get
+  match '/couchdb/unhealthy' => 'application#get_unhealthy', via: :get
+  match '/couchdb/update_state' => 'application#update_state', via: :post
 
   # mongoid routes
-  match '/watchdogs/update_state' => 'watchdogs#update_state', via: :post
+  match '/mongodb/state' => 'watchdogs#get_state', via: :get
+  match '/mongodb/healthy' => 'watchdogs#get_healthy', via: :get
+  match '/mongodb/unhealthy' => 'watchdogs#get_unhealthy', via: :get
+  match '/mongodb/update_state' => 'watchdogs#update_state', via: :post
 
 
 

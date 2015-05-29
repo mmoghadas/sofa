@@ -52,10 +52,10 @@ class WatchdogsController < ApplicationController
   end
 
   def update_state
-    id = params['id']
+    name = params['name']
     state = params['state']
 
-    Watchdog.where(name: id).find_and_modify({ "$set" => { state: state }}, upsert: true)
+    Watchdog.where(name: name).find_and_modify({ "$set" => { state: state }}, upsert: true)
 
     respond_to do |format|
       format.html { head :no_content }
@@ -71,6 +71,41 @@ class WatchdogsController < ApplicationController
       format.html { redirect_to watchdogs_url, notice: 'Watchdog was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def get_state
+    if params['name']
+      get_service_health
+    else
+      get_all_health_status
+    end
+  end
+
+  def get_service_health
+    name = params['name']
+    data = Watchdog.where(name: name).first
+    result = "#{data[:name]} : #{data[:state]}"
+    render json: result
+  end
+
+  def get_all_health_status
+    result = "you need to pass parameter 'name'"
+    render json: result
+  end
+
+  def get_healthy
+    display('healthy')
+  end
+
+  def get_unhealthy
+    display('unhealthy')
+  end
+
+  def display(state)
+    data = Watchdog.where(state: /#{state}/i)
+    results = data.map{|r| "#{r[:name]} : #{r[:state]}"}
+    results.insert(0, results.count)
+    render json: results
   end
 
   private
