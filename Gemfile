@@ -24,7 +24,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'puma'
 gem 'couchrest'
-gem 'mongoid'
+# gem 'mongoid'
+gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongo'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

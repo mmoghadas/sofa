@@ -55,7 +55,7 @@ class WatchdogsController < ApplicationController
     name = params['name']
     state = params['state']
 
-    Watchdog.where(name: name).find_and_modify({ "$set" => { state: state }}, upsert: true)
+    Watchdog.where(name: name).find_one_and_update({ "$set" => { state: state }}, upsert: true)
 
     respond_to do |format|
       format.html { head :no_content }
@@ -102,7 +102,7 @@ class WatchdogsController < ApplicationController
   end
 
   def display(state)
-    data = Watchdog.where(state: /#{state}/i)
+    data = Watchdog.where(state: /^#{state}$/i)
     results = data.map{|r| "#{r[:name]} : #{r[:state]}"}
     results.insert(0, results.count)
     render json: results
