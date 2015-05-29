@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :watchdogs
   # test routes
   match '/nothing' => 'application#get_nothing', via: :get
   match '/nothing' => 'application#post_nothing', via: :post
@@ -11,9 +12,12 @@ Rails.application.routes.draw do
   match '/health_status' => 'application#post_heath_status', via: :post
 
   # mongodb routes
-  match '/healthy_watchdogs' => 'application#get_healthy_watchdogs', via: :get
-  match '/unhealthy_watchdogs' => 'application#get_unhealthy_watchdogs', via: :get
-  match '/health_state' => 'application#post_heath_state', via: :post
+  # match '/healthy_watchdogs' => 'application#get_healthy_watchdogs', via: :get
+  # match '/unhealthy_watchdogs' => 'application#get_unhealthy_watchdogs', via: :get
+  # match '/health_state' => 'application#post_heath_state', via: :post
+
+  # mongoid routes
+  match '/watchdogs/update_state' => 'watchdogs#update_state', via: :post
 
 
 

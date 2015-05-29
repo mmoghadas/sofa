@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @watchdog.name %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @watchdog.state %>
+</p>
+
+<%= link_to 'Edit', edit_watchdog_path(@watchdog) %> |
+<%= link_to 'Back', watchdogs_path %>

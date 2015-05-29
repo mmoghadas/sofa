@@ -2,14 +2,13 @@ require 'net/http'
 require 'uri'
 require 'json/ext'
 require 'couchrest'
-require 'mongo'
 
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   # protect_from_forgery with: :exception
 
-  attr_reader :uri, :db
+  attr_reader :uri, :db, :watchdog
 
   def get_nothing
     render text: 'nothing'
@@ -22,34 +21,6 @@ class ApplicationController < ActionController::Base
   def curl_get_example
     data = sit(:get, '/prod')
     render json: data
-  end
-
-  ########################
-  #  Mongo               #
-  ########################
-
-  def get_healthy_watchdogs
-    display_watchdogs('healthy')
-  end
-
-  def get_unhealthy_watchdogs
-    display_watchdogs('unhealthy')
-  end
-
-  def display_watchdogs(state)
-    data = watchdogs.find(:state => state)
-    results = data.map{|w| "#{w[:name]} : #{w[:state]}"}
-    results.insert(0, results.count)
-    render json: results
-  end
-
-  def post_heath_state
-    id = params['id']
-    state = params['state']
-
-    watchdogs.find(name: id).update_one({name: id, state: state}, upsert: true)
-
-    render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
   end
 
   ########################
@@ -91,22 +62,6 @@ class ApplicationController < ActionController::Base
     render json: results
   end
 
-  # def post_heath_status
-  #   id = params['_id']
-  #   status = params['status']
-
-  #   data = {'_id'=>id, 'status'=>status}
-
-  #   record = get_record(id)
-
-  #   if record
-  #     CouchRest.put("#{url}/#{id}", data.merge('_rev'=>record['_rev']))
-  #   else
-  #     CouchRest.put("#{url}/#{id}", data)
-  #   end
-  #   render text: "Thanks for sending a POST request with cURL! Payload: #{request.body.read}"
-  # end
-
   def post_heath_status
     id = params['_id']
     status = params['status']
@@ -143,12 +98,6 @@ class ApplicationController < ActionController::Base
 
   def db
     @db ||= CouchRest.database(url)
-  end
-
-  def watchdogs
-    Mongo::Logger.logger.level = Logger::WARN
-    mongodb_host = ENV['MONGODB_HOST'] ? ENV['MONGODB_HOST'] : '127.0.0.1:27017'
-    Mongo::Client.new([ mongodb_host ], :database => 'prod')[:watchdogs]
   end
 
   def http_request(req)

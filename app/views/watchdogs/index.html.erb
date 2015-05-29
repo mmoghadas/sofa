@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Watchdogs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>State</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @watchdogs.each do |watchdog| %>
+      <tr>
+        <td><%= watchdog.name %></td>
+        <td><%= watchdog.state %></td>
+        <td><%= link_to 'Show', watchdog %></td>
+        <td><%= link_to 'Edit', edit_watchdog_path(watchdog) %></td>
+        <td><%= link_to 'Destroy', watchdog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Watchdog', new_watchdog_path %>
