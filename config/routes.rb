@@ -11,11 +11,17 @@ Rails.application.routes.draw do
   match '/couchdb/unhealthy' => 'application#get_unhealthy', via: :get
   match '/couchdb/update_state' => 'application#update_state', via: :post
 
+  # mongo routes
+  match '/mongo/state' => 'application#get_state_mongo', via: :get
+  match '/mongo/healthy' => 'application#get_healthy_mongo', via: :get
+  match '/mongo/unhealthy' => 'application#get_unhealthy_mongo', via: :get
+  match '/mongo/update_state' => 'application#update_state_mongo', via: :post
+
   # mongoid routes
-  match '/mongodb/state' => 'watchdogs#get_state', via: :get
-  match '/mongodb/healthy' => 'watchdogs#get_healthy', via: :get
-  match '/mongodb/unhealthy' => 'watchdogs#get_unhealthy', via: :get
-  match '/mongodb/update_state' => 'watchdogs#update_state', via: :post
+  match '/mongoio/state' => 'watchdogs#get_state', via: :get
+  match '/mongoio/healthy' => 'watchdogs#get_healthy', via: :get
+  match '/mongoio/unhealthy' => 'watchdogs#get_unhealthy', via: :get
+  match '/mongoio/update_state' => 'watchdogs#update_state', via: :post
 
 
 
