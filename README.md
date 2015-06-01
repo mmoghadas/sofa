@@ -2,10 +2,20 @@ Sofa
 ==================================
 
 ```bash
+
+# you may use the client or curl:
+
+# Client
+ruby lib/client.rb --driver couchrest --name http_0 --state unhealthy
+
+
+- OR -
+# With Curl:
+
 # couchdb(couchrest)
 json='
 {
- "_id": "http_000000",
+ "name": "http_000000",
  "state": "healthy"
 }
 '

@@ -40,7 +40,7 @@ class CouchrestController < ApplicationController
   end
 
   def update_state
-    id = params['_id']
+    id = params['name']
     state = params['state']
 
     data = {'_id'=>id, 'state'=>state}
