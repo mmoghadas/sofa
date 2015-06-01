@@ -6,22 +6,22 @@ Rails.application.routes.draw do
   match '/nothing' => 'application#post_nothing', via: :post
 
   # couchdb routes
-  match '/couchdb/state' => 'application#get_state', via: :get
-  match '/couchdb/healthy' => 'application#get_healthy', via: :get
-  match '/couchdb/unhealthy' => 'application#get_unhealthy', via: :get
-  match '/couchdb/update_state' => 'application#update_state', via: :post
+  match '/couchrest/state' => 'couchrest#get_state', via: :get
+  match '/couchrest/healthy' => 'couchrest#get_healthy', via: :get
+  match '/couchrest/unhealthy' => 'couchrest#get_unhealthy', via: :get
+  match '/couchrest/update_state' => 'couchrest#update_state', via: :post
 
-  # mongo routes
-  match '/mongo/state' => 'application#get_state_mongo', via: :get
-  match '/mongo/healthy' => 'application#get_healthy_mongo', via: :get
-  match '/mongo/unhealthy' => 'application#get_unhealthy_mongo', via: :get
-  match '/mongo/update_state' => 'application#update_state_mongo', via: :post
+  # mongo_driver routes
+  match '/mongo_driver/state' => 'mongo_driver#get_state_mongo', via: :get
+  match '/mongo_driver/healthy' => 'mongo_driver#get_healthy_mongo', via: :get
+  match '/mongo_driver/unhealthy' => 'mongo_driver#get_unhealthy_mongo', via: :get
+  match '/mongo_driver/update_state' => 'mongo_driver#update_state_mongo', via: :post
 
   # mongoid routes
-  match '/mongoio/state' => 'watchdogs#get_state', via: :get
-  match '/mongoio/healthy' => 'watchdogs#get_healthy', via: :get
-  match '/mongoio/unhealthy' => 'watchdogs#get_unhealthy', via: :get
-  match '/mongoio/update_state' => 'watchdogs#update_state', via: :post
+  match '/mongoid/state' => 'watchdogs#get_state', via: :get
+  match '/mongoid/healthy' => 'watchdogs#get_healthy', via: :get
+  match '/mongoid/unhealthy' => 'watchdogs#get_unhealthy', via: :get
+  match '/mongoid/update_state' => 'watchdogs#update_state', via: :post
 
 
 
