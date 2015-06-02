@@ -1,5 +1,6 @@
 class WatchdogsController < ApplicationController
   before_action :set_watchdog, only: [:show, :edit, :update, :destroy]
+  before_action :restrict_access, only: [:update_state]
 
   # GET /watchdogs
   # GET /watchdogs.json
@@ -118,4 +119,11 @@ class WatchdogsController < ApplicationController
     def watchdog_params
       params.require(:watchdog).permit(:name, :state)
     end
+
+    def restrict_access
+      authenticate_or_request_with_http_token do |token, options|
+        ApiKey.where(access_token: token).exists?
+      end
+    end
+
 end

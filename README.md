@@ -1,5 +1,6 @@
 Sofa
 ==================================
+# Requires: JRuby
 
 ```bash
 
@@ -20,7 +21,7 @@ json='
 }
 '
 
-curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/couchrest/update_state
+curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/couchrest/update_state "Authorization: Token token=eb025421974c0d1ad9b24a95f1ea97f5"
 
 # mongodb (mongo driver)
 json='
@@ -30,7 +31,7 @@ json='
 }
 '
 
-curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/mongo_driver/update_state
+curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/mongo_driver/update_state "Authorization: Token token=eb025421974c0d1ad9b24a95f1ea97f5"
 
 
 # mongodb (mongoid)
@@ -41,5 +42,5 @@ json='
 }
 '
 
-curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/mongoid/update_state
+curl -H "Content-Type: application/json" -X POST -d $json http://127.0.0.1:3000/mongoid/update_state -H "Authorization: Token token=eb025421974c0d1ad9b24a95f1ea97f5"
 ```
