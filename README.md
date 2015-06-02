@@ -7,6 +7,9 @@ Sofa
 # you may use the client or curl:
 
 # Client
+git clone git@github.com:mmoghadas/sofa-client.git
+cd sofa-client
+bundle (if need to)
 ruby lib/client.rb --driver couchrest --name http_0 --state unhealthy
 
 
