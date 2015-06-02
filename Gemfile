@@ -27,6 +27,7 @@ gem 'couchrest'
 # gem 'mongoid'
 gem 'mongoid', github: 'mongoid/mongoid'
 gem 'mongo'
+gem 'clamp'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
