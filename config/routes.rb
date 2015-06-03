@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   match '/nothing' => 'application#get_nothing', via: :get
   match '/nothing' => 'application#post_nothing', via: :post
 
+  # api key route
+  match '/api_key/generate' => 'api_key#generate', via: :post
+
   # couchdb routes
   match '/couchrest/state' => 'couchrest#get_state', via: :get
   match '/couchrest/healthy' => 'couchrest#get_healthy', via: :get
