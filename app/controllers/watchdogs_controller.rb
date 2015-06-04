@@ -96,7 +96,11 @@ class WatchdogsController < ApplicationController
     tag = params['tag']
     data = Watchdog.where(tag: /^#{tag}$/i)
     results = data.map{|r| "#{r[:name]} : #{r[:state]} : #{r[:tag]}"}
-    results.insert(0, results.count)
+
+    overall_status = 'HEALTHY'
+    overall_status = 'UNHEALTHY' if data.all.detect{|d|d[:state]=='unhealthy'}
+
+    results.insert(0, overall_status)
     render json: results
   end
 
