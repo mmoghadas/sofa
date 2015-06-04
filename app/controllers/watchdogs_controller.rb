@@ -55,8 +55,9 @@ class WatchdogsController < ApplicationController
   def update_state
     name = params['name']
     state = params['state']
+    tag = params['tag']
 
-    Watchdog.where(name: name).find_one_and_update({ "$set" => { state: state }}, upsert: true)
+    Watchdog.where(name: name).find_one_and_update({ "$set" => { state: state, tag: tag }}, upsert: true)
 
     respond_to do |format|
       format.html { head :no_content }
@@ -77,6 +78,8 @@ class WatchdogsController < ApplicationController
   def get_state
     if params['name']
       get_service_health
+    elsif params['tag']
+      get_service_by_tag
     else
       get_all_health_status
     end
@@ -87,6 +90,14 @@ class WatchdogsController < ApplicationController
     data = Watchdog.where(name: name).first
     result = "#{data[:name]} : #{data[:state]}"
     render json: result
+  end
+
+  def get_service_by_tag
+    tag = params['tag']
+    data = Watchdog.where(tag: /^#{tag}$/i)
+    results = data.map{|r| "#{r[:name]} : #{r[:state]} : #{r[:tag]}"}
+    results.insert(0, results.count)
+    render json: results
   end
 
   def get_all_health_status
