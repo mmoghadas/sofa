@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   match '/couchrest/unhealthy' => 'couchrest#get_unhealthy', via: :get
   match '/couchrest/update_state' => 'couchrest#update_state', via: :post
 
+  # couch_potato routes
+  match '/couch_potato/state' => 'couch_potato#get_state', via: :get
+  match '/couch_potato/healthy' => 'couch_potato#get_healthy', via: :get
+  match '/couch_potato/unhealthy' => 'couch_potato#get_unhealthy', via: :get
+  match '/couch_potato/update_state' => 'couch_potato#update_state', via: :post
+
   # mongo_driver routes
   match '/mongo_driver/state' => 'mongo_driver#get_state_mongo', via: :get
   match '/mongo_driver/healthy' => 'mongo_driver#get_healthy_mongo', via: :get
